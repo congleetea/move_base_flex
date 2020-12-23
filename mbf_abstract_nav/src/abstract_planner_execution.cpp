@@ -42,14 +42,16 @@
 
 namespace mbf_abstract_nav
 {
-
-AbstractPlannerExecution::AbstractPlannerExecution(
-    const std::string &name,
-    const mbf_abstract_core::AbstractPlanner::Ptr &planner_ptr,
-    const MoveBaseFlexConfig &config) :
-  AbstractExecutionBase(name),
-    planner_(planner_ptr), state_(INITIALIZED), max_retries_(0), planning_(false),
-    has_new_start_(false), has_new_goal_(false)
+AbstractPlannerExecution::AbstractPlannerExecution(const std::string& name,
+                                                   const mbf_abstract_core::AbstractPlanner::Ptr& planner_ptr,
+                                                   const MoveBaseFlexConfig& config)
+  : AbstractExecutionBase(name)
+  , planner_(planner_ptr)
+  , state_(INITIALIZED)
+  , max_retries_(0)
+  , planning_(false)
+  , has_new_start_(false)
+  , has_new_goal_(false)
 {
   ros::NodeHandle private_nh("~");
 
@@ -96,10 +98,12 @@ void AbstractPlannerExecution::reconfigure(const MoveBaseFlexConfig &config)
 
   // Timeout granted to the global planner. We keep calling it up to this time or up to max_retries times
   // If it doesn't return within time, the navigator will cancel it and abort the corresponding action
-  try{
+  try
+  {
     patience_ = ros::Duration(config.planner_patience);
   }
-  catch(std::exception& ex) {
+  catch (std::exception& ex)
+  {
     ROS_ERROR_STREAM("Failed to set planner_patience: " << ex.what());
     patience_ = ros::Duration(0);
   }
